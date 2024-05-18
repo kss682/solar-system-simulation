@@ -1,0 +1,4 @@
+Member1: Srinidhi Krishna, Kalpathy Sundaram (3748589)
+Member2: Giridhar Chinnikkaramadom Govindan (3747771)
+Group Name: stimulators
+GitLab repo: Awaiting access to gitlab instance

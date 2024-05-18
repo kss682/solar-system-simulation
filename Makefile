@@ -1,0 +1,3 @@
+SRCDIR=src
+BINDIR=bin
+
