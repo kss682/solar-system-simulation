@@ -25,14 +25,14 @@ void BarnesHut::compute_bounding_box(){
 
 void BarnesHut::construct_oct_tree(){
     
-    for(auto body: bodies){
-        cout<<"Adding "<<body.name<<" to oct tree"<<endl;
+    for(int i = 0; i < this->bodies.size(); i++){
+        cout<<"Adding "<<this->bodies[i].name<<" to oct tree"<<endl;
         if(this->root==nullptr){
             cout<<"Creating the first node"<<endl;
-            this->root = new Node(body, this->bb_width, this->bb_height, this->bb_breadth, 0, 0, 0);
+            this->root = new Node(this->bodies[i], this->bb_width, this->bb_height, this->bb_breadth, 0, 0, 0);
         }else{
-            this->root->add_body(body);
-            cout<<body.name<<endl;
+            this->root->add_body(this->bodies[i]);
+            cout<<this->bodies[i].name<<endl;
         }
     }
 }
@@ -47,6 +47,9 @@ void BarnesHut::display_tree(){
 
 void BarnesHut::display_node(Node node){
     node.display_node();
+    for(int i = 0; i < node.get_children().size(); i++){
+        this->display_node(node.get_children()[i]);
+    }
 }
 
 

@@ -11,7 +11,7 @@ using namespace std;
 enum NODE_TYPE{
     ROOT,
     INTERNAL,
-    LEAF
+    LEAF 
 };
 
 struct Body {

@@ -60,7 +60,7 @@ int main(){
     // Cmd line arguements
 
 
-    string filename = "./data/planets.csv";
+    string filename = "/home/srinidhi/MyWork/SolarSystemStimulation/data/planets.csv";
     read_csv(filename);
 
     BarnesHut barnes_hut = BarnesHut(bodies);

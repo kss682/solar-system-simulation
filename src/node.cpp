@@ -21,41 +21,45 @@ Node::Node(double width, double height, double breadth, double nc_x, double nc_y
     this->dim_of_bb.push_back(width);
     this->dim_of_bb.push_back(height);
     // this->dim_of_bb.push_back(breadth);   
+    this->node_type = NODE_TYPE::LEAF;
 }
 
 
 void Node::add_body(Body &body){
-    if(this->body == nullptr){
+    if(this->body == nullptr && (this->node_type == NODE_TYPE::LEAF || this->node_type == NODE_TYPE::ROOT)){
+        cout<<"Assigning bodies: "<<body.name<<endl;
         this->body = &body;
         return;
     }
 
     if(this->children.size() == 0){
         this->children.push_back(
-            Node(this->dim_of_bb[0]/2, this->dim_of_bb[1]/2, this->dim_of_bb[2]/2, this->dim_of_bb[0]/2, this->dim_of_bb[1]/2, this->dim_of_bb[2]/2)
+            Node(this->dim_of_bb[0]/2, this->dim_of_bb[1]/2, this->dim_of_bb[2]/2, this->cen_of_bb[0] + this->dim_of_bb[0]/2, this->cen_of_bb[1] + this->dim_of_bb[1]/2, this->dim_of_bb[2]/2)
         );
         this->children.push_back(
-            Node(this->dim_of_bb[0]/2, this->dim_of_bb[1]/2, this->dim_of_bb[2]/2, -1*this->dim_of_bb[0]/2, this->dim_of_bb[1]/2, this->dim_of_bb[2]/2)
+            Node(this->dim_of_bb[0]/2, this->dim_of_bb[1]/2, this->dim_of_bb[2]/2, this->cen_of_bb[0] - this->dim_of_bb[0]/2, this->cen_of_bb[1] + this->dim_of_bb[1]/2, this->dim_of_bb[2]/2)
         );
         this->children.push_back(
-            Node(this->dim_of_bb[0]/2, this->dim_of_bb[1]/2, this->dim_of_bb[2]/2,  this->dim_of_bb[0]/2, -1*this->dim_of_bb[1]/2, this->dim_of_bb[2]/2)
+            Node(this->dim_of_bb[0]/2, this->dim_of_bb[1]/2, this->dim_of_bb[2]/2, this->cen_of_bb[0] - this->dim_of_bb[0]/2, this->cen_of_bb[0] - this->dim_of_bb[1]/2, this->dim_of_bb[2]/2)
         );
         this->children.push_back(
-            Node(this->dim_of_bb[0]/2, this->dim_of_bb[1]/2, this->dim_of_bb[2]/2, -1*this->dim_of_bb[0]/2, -1*this->dim_of_bb[1]/2, this->dim_of_bb[2]/2)
+            Node(this->dim_of_bb[0]/2, this->dim_of_bb[1]/2, this->dim_of_bb[2]/2,  this->cen_of_bb[0] + this->dim_of_bb[0]/2, this->cen_of_bb[0] - this->dim_of_bb[1]/2, this->dim_of_bb[2]/2)
         );
     }
 
     // First move the existing body in parent node to child, 
     if(this->body != nullptr){
-        if(this->children[0].check_bb(this->body->pos[0], this->body->pos[1])) this->children[0].add_body(*(this->body));
-        else if(this->children[1].check_bb(this->body->pos[0], this->body->pos[1])) this->children[1].add_body(*(this->body)); 
-        else if(this->children[2].check_bb(this->body->pos[0], this->body->pos[1])) this->children[2].add_body(*(this->body));
-        else if(this->children[3].check_bb(this->body->pos[0], this->body->pos[1])) this->children[3].add_body(*(this->body));
+        if(this->children[0].check_bb(this->body->pos[0], this->body->pos[1])) {this->children[0].add_body(*(this->body));}
+        else if(this->children[1].check_bb(this->body->pos[0], this->body->pos[1])) {this->children[1].add_body(*(this->body));} 
+        else if(this->children[2].check_bb(this->body->pos[0], this->body->pos[1])) {this->children[2].add_body(*(this->body));}
+        else if(this->children[3].check_bb(this->body->pos[0], this->body->pos[1])) {this->children[3].add_body(*(this->body));}
         this->body = nullptr;
-        return;
+        this->node_type = NODE_TYPE::INTERNAL;
     }
-
-
+ 
+    
+    cout<<body.name<<" "<<body.pos[0]<<" "<<body.pos[1]<<endl;
+    cout<<this->cen_of_bb[0]<<" "<<this->cen_of_bb[1]<<" "<<this->dim_of_bb[0]<<" "<<this->dim_of_bb[1]<<endl;
     if(this->children[0].check_bb(body.pos[0], body.pos[1])) this->children[0].add_body(body);
     else if(this->children[1].check_bb(body.pos[0], body.pos[1])) this->children[1].add_body(body); 
     else if(this->children[2].check_bb(body.pos[0], body.pos[1])) this->children[2].add_body(body);
@@ -65,8 +69,8 @@ void Node::add_body(Body &body){
 
 
 bool Node::check_bb(double width, double height){
-    if((this->cen_of_bb[0] + this->dim_of_bb[0] >= width && this->cen_of_bb[0] - this->dim_of_bb[0] <= width) 
-        && (this->cen_of_bb[1] + this->dim_of_bb[1] >= height && this->cen_of_bb[1] - this->dim_of_bb[1] <= height)) return true;
+    if((abs(width - this->cen_of_bb[0]) <= this->dim_of_bb[0]) 
+        && (abs(this->cen_of_bb[1] - height) <= this->dim_of_bb[1])) return true;
     return false;
 }
 
@@ -82,5 +86,5 @@ void Node::display_node(){
     if(this->body == nullptr) return;
     cout<<"Body name: "<<this->body->name<<endl;
     cout<<"Body pos: "<<this->body->pos[0]<<" "<<this->body->pos[1]<<endl;
-    cout<<"Bounding box: "<<this->dim_of_bb[0]<<" "<<this->dim_of_bb[1]<<endl;
+    cout<<"Bounding box: "<<this->cen_of_bb[0]<<" "<<this->cen_of_bb[1]<<endl;
 }
