@@ -1,26 +1,22 @@
 #include <iostream>
+#include<cmath>
+#include<fstream>
 #include<stdlib.h>
 #include<string>
 #include<vector>
-#include<cmath>
-#include<fstream>
-#include "node.hpp"
+
 #include "barnes_hut.hpp"
+#include "node.hpp"
+
 using namespace std;
-/*
-    Compile all the dependencies to a binary called "stimulate"
 
-    ./stimulate takes the input file, dt - 
-*/
+string FILENAME;
+vector<Body> BODIES;
 
-vector<Body> bodies;
-
-// Optimize this reading ??
 void read_csv(string filename){
-    // vector<Body> bodies;
-
     string line;
     fstream myfile;
+
     myfile.open(filename, fstream::in);
     if (myfile.is_open())
     {
@@ -46,24 +42,19 @@ void read_csv(string filename){
             body->vel.push_back(stod(values[7]));
             body->vel.push_back(stod(values[8]));
             body->vel.push_back(stod(values[9]));
-            bodies.push_back(*body);
+            BODIES.push_back(*body);
         }
         myfile.close();
     }
     else cout << "Unable to open file"; 
-
-
-    // return bodies;
 }
 
-int main(){
-    // Cmd line arguements
+int main(int argc, char *argv[]){
+    FILENAME = "/home/srinidhi/MyWork/SolarSystemStimulation/data/planets_and_moons_state_vectors.csv";
 
+    read_csv(FILENAME);
 
-    string filename = "/home/srinidhi/MyWork/SolarSystemStimulation/data/planets.csv";
-    read_csv(filename);
-
-    BarnesHut barnes_hut = BarnesHut(bodies);
+    BarnesHut barnes_hut = BarnesHut(BODIES);
 
     // barnes_hut.clear_oct_tree();
     barnes_hut.compute_bounding_box();

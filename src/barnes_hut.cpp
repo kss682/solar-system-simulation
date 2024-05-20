@@ -17,23 +17,17 @@ void BarnesHut::compute_bounding_box(){
     for(auto body: this->bodies){
         this->bb_width = (double) abs(max(this->bb_width, abs(body.pos[0]))) + 1;
         this->bb_height = (double) abs(max(this->bb_height, abs(body.pos[1]))) + 1;
-        // this->bb_width = max(this->bb_width, abs(body.pos[2]));
+        this->bb_breadth = (double) abs(max(this->bb_breadth, abs(body.pos[2]))) + 1;
     }
 
-    cout<<this->bb_width<<" "<<this->bb_height<<endl;
+    cout<<this->bb_width<<" "<<this->bb_height<<" "<<this->bb_breadth<<endl;
 }
 
 void BarnesHut::construct_oct_tree(){
-    
     for(int i = 0; i < this->bodies.size(); i++){
         cout<<"Adding "<<this->bodies[i].name<<" to oct tree"<<endl;
-        if(this->root==nullptr){
-            cout<<"Creating the first node"<<endl;
-            this->root = new Node(this->bodies[i], this->bb_width, this->bb_height, this->bb_breadth, 0, 0, 0);
-        }else{
-            this->root->add_body(this->bodies[i]);
-            cout<<this->bodies[i].name<<endl;
-        }
+        if(this->root==nullptr) this->root = new Node(this->bb_width, this->bb_height, this->bb_breadth, 0, 0, 0);
+        this->root->add_body(this->bodies[i]);
     }
 }
 

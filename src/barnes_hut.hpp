@@ -16,15 +16,13 @@ class BarnesHut{
     void display_tree();
     void display_node(Node node);
 
-    private:
-    // Define the constants 
+    private: 
     double theta;
     double delta;
-
     double bb_width, bb_height, bb_breadth;
-    vector<Body> bodies;
-    // Referencing oct tree
+    
     Node *root;
+    vector<Body> bodies;
 };
 
 #endif
