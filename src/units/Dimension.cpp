@@ -15,7 +15,9 @@ Dimension::Dimension() {
 }
 
 Dimension::Dimension(double unit) {
-
+    length = unit;
+    width = unit;
+    height = unit;
 }
 
 Dimension::Dimension(const Dimension &d) {

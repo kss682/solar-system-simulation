@@ -28,7 +28,7 @@ void Tree_Creator::constructOctTree() {
     for (int i = 0; i < this->bodies.size(); i++) {
         cout << "Adding " << this->bodies[i].getName() << " to oct tree" << endl;
         if (this->root == nullptr)
-            this->root = new Element(bodies[i], boundingBox);
+            this->root = new Element(boundingBox);
         this->root->addBody(this->bodies[i]);
     }
 }
