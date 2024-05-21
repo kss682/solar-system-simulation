@@ -7,6 +7,7 @@
 
 Element::Element(Body body, const BoundingBox &boundingBox) : body(&body), boundingBox(boundingBox) {
     totalMass += body.getMass();
+    nodeType = NODE_TYPE::LEAF;
 }
 
 Element::Element(const BoundingBox &boundingBox) : boundingBox(boundingBox) {
@@ -25,41 +26,41 @@ void Element::addBody(Body &body) {
     if (this->children.size() == 0) this->generateChildren();
 
     if (this->body != nullptr) {
-        if (boundingBox.has(this->children[0].body->getPosition()))
+        if (children[0].boundingBox.has(this->body->getPosition()))
             this->children[0].addBody(*(this->body));
-        else if (boundingBox.has(this->children[1].body->getPosition()))
+        else if (children[1].boundingBox.has(this->body->getPosition()))
             this->children[1].addBody(*(this->body));
-        else if (boundingBox.has(this->children[2].body->getPosition()))
+        else if (children[2].boundingBox.has(this->body->getPosition()))
             this->children[2].addBody(*(this->body));
-        else if (boundingBox.has(this->children[3].body->getPosition()))
+        else if (children[3].boundingBox.has(this->body->getPosition()))
             this->children[3].addBody(*(this->body));
-        else if (boundingBox.has(this->children[4].body->getPosition()))
+        else if (children[4].boundingBox.has(this->body->getPosition()))
             this->children[4].addBody(*(this->body));
-        else if (boundingBox.has(this->children[5].body->getPosition()))
+        else if (children[5].boundingBox.has(this->body->getPosition()))
             this->children[5].addBody(*(this->body));
-        else if (boundingBox.has(this->children[6].body->getPosition()))
+        else if (children[6].boundingBox.has(this->body->getPosition()))
             this->children[6].addBody(*(this->body));
-        else if (boundingBox.has(this->children[7].body->getPosition()))
+        else if (children[7].boundingBox.has(this->body->getPosition()))
             this->children[7].addBody(*(this->body));
         this->body = nullptr;
         this->nodeType = NODE_TYPE::INTERNAL;
     }
 
-    if (boundingBox.has(this->children[0].body->getPosition()))
+    if (children[0].boundingBox.has(body.getPosition()))
         this->children[0].addBody(body);
-    else if (boundingBox.has(this->children[1].body->getPosition()))
+    else if (children[1].boundingBox.has(body.getPosition()))
         this->children[1].addBody(body);
-    else if (boundingBox.has(this->children[2].body->getPosition()))
+    else if (children[2].boundingBox.has(body.getPosition()))
         this->children[2].addBody(body);
-    else if (boundingBox.has(this->children[3].body->getPosition()))
+    else if (children[3].boundingBox.has(body.getPosition()))
         this->children[3].addBody(body);
-    else if (boundingBox.has(this->children[4].body->getPosition()))
+    else if (children[4].boundingBox.has(body.getPosition()))
         this->children[4].addBody(body);
-    else if (boundingBox.has(this->children[5].body->getPosition()))
+    else if (children[5].boundingBox.has(body.getPosition()))
         this->children[5].addBody(body);
-    else if (boundingBox.has(this->children[6].body->getPosition()))
+    else if (children[6].boundingBox.has(body.getPosition()))
         this->children[6].addBody(body);
-    else if (boundingBox.has(this->children[7].body->getPosition()))
+    else if (children[7].boundingBox.has(body.getPosition()))
         this->children[7].addBody(body);
 
     this->updateCenterOfMass();
