@@ -28,8 +28,8 @@ private:
     Vector centerOfMass = Vector();
     vector<Element> children;
 public:
-    Element(Body body, const BoundingBox &boundingBox);
     Element(const BoundingBox &boundingBox);
+    Element(const BoundingBox &boundingBox, NODE_TYPE nodeType);
     void addBody(Body &body);
     void generateChildren();
     bool checkBoundingBox(Dimension dimension);

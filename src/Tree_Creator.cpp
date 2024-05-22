@@ -28,9 +28,10 @@ void Tree_Creator::constructOctTree() {
     for (int i = 0; i < this->bodies.size(); i++) {
         cout << "Adding " << this->bodies[i].getName() << " to oct tree" << endl;
         if (this->root == nullptr)
-            this->root = new Element(boundingBox);
+            this->root = new Element(boundingBox, NODE_TYPE::ROOT);
         this->root->addBody(this->bodies[i]);
     }
+    cout << "Tree Constructed" << endl;
 }
 
 void Tree_Creator::computeForces() {
@@ -41,10 +42,10 @@ void Tree_Creator::displayTree() {
     displayElement(*(this->root));
 }
 
-void Tree_Creator::displayElement(Element Element) {
-    Element.displayElement();
-    for (int i = 0; i < Element.getChildren().size(); i++) {
-        this->displayElement(Element.getChildren()[i]);
+void Tree_Creator::displayElement(Element element) {
+    element.displayElement();
+    for (int i = 0; i < element.getChildren().size(); i++) {
+        this->displayElement(element.getChildren()[i]);
     }
 }
 

@@ -5,14 +5,23 @@
 #include "Element.h"
 
 
-Element::Element(Body body, const BoundingBox &boundingBox) : body(&body), boundingBox(boundingBox) {
-    totalMass += body.getMass();
-    nodeType = NODE_TYPE::LEAF;
-}
-
 Element::Element(const BoundingBox &boundingBox) : boundingBox(boundingBox) {
     body = nullptr;
+    nodeType = NODE_TYPE::LEAF;
+    totalMass = 0;
 }
+
+Element::Element(const BoundingBox &boundingBox, NODE_TYPE nodeType) :
+        boundingBox(boundingBox),
+        nodeType(nodeType) {
+    body = nullptr;
+    totalMass = 0;
+}
+
+// Starting point - Root
+// For each element -
+// Check if it fits in the
+
 
 void Element::addBody(Body &body) {
     if (this->body == nullptr && (this->nodeType == NODE_TYPE::LEAF || this->nodeType == NODE_TYPE::ROOT)) {
@@ -23,7 +32,7 @@ void Element::addBody(Body &body) {
         return;
     }
 
-    if (this->children.size() == 0) this->generateChildren();
+    if (this->children.empty()) this->generateChildren();
 
     if (this->body != nullptr) {
         if (children[0].boundingBox.has(this->body->getPosition()))
@@ -62,7 +71,6 @@ void Element::addBody(Body &body) {
         this->children[6].addBody(body);
     else if (children[7].boundingBox.has(body.getPosition()))
         this->children[7].addBody(body);
-
     this->updateCenterOfMass();
 
 }
@@ -152,12 +160,14 @@ void Element::generateChildren() {
 
 void Element::displayElement() {
     if (this->body == nullptr) return;
-    cout << "Body name: " << this->body->getName() << endl;
-    cout << "Body pos: " << this->body->getPosition().getX() << " " << this->body->getPosition().getY() << ""
-         << this->body->getPosition().getZ() << endl;
-//    cout<<"Bounding box: "<<boundingBox.get<<" "<<this->cen_of_bb[1]<<" "<<this->cen_of_bb[2]<<endl;
-//    cout<<"Total Mass: "<<this->total_mass<<endl;
-//    cout<<"Center of Mass: "<<this->center_of_mass[0]<<" "<<this->center_of_mass[1]<<" "<<this->center_of_mass[2]<<endl;
+    cout << endl << this->body->getName() << endl << "===============================" << endl;
+    cout << "Body pos: [" << this->body->getPosition().getX() << ", " << this->body->getPosition().getY() << ", "
+         << this->body->getPosition().getZ() << " ]" << endl;
+    cout << "Bounding Box \n Dimensions : [l = " << boundingBox.getDimensions().getLength() << ", w = "
+         << boundingBox.getDimensions().getWidth() << ", h = " << boundingBox.getDimensions().getHeight() << " ]"
+         << "\n Center : [ " << boundingBox.getCenter().getX() << ", " << boundingBox.getCenter().getY() << ", "
+         << boundingBox.getCenter().getZ() << " ]" << endl;
+    cout << "Total Mass: " << this->totalMass << endl;
 }
 
 vector<Element> Element::getChildren() {
