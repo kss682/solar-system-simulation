@@ -18,11 +18,6 @@ Element::Element(const BoundingBox &boundingBox, NODE_TYPE nodeType) :
     totalMass = 0;
 }
 
-// Starting point - Root
-// For each element -
-// Check if it fits in the
-
-
 void Element::addBody(Body &body) {
     if (this->body == nullptr && (this->nodeType == NODE_TYPE::LEAF || this->nodeType == NODE_TYPE::ROOT)) {
         cout << "Assigning bodies: " << body.getName() << endl;
@@ -92,70 +87,70 @@ void Element::updateCenterOfMass() {
 }
 
 void Element::generateChildren() {
-    this->children.push_back(
-            Element(BoundingBox(Vector(boundingBox.getCenter().getX() + boundingBox.getDimensions().getLength() / 2,
-                                       boundingBox.getCenter().getY() + boundingBox.getDimensions().getWidth() / 2,
-                                       boundingBox.getCenter().getZ() + boundingBox.getDimensions().getHeight() / 2),
-                                Dimension(this->boundingBox.getDimensions().getLength() / 2,
-                                          this->boundingBox.getDimensions().getWidth() / 2,
-                                          boundingBox.getDimensions().getHeight() / 2))));
+    this->children.emplace_back(
+            BoundingBox(Vector(boundingBox.getCenter().getX() + boundingBox.getDimensions().getLength() / 2,
+                               boundingBox.getCenter().getY() + boundingBox.getDimensions().getWidth() / 2,
+                               boundingBox.getCenter().getZ() + boundingBox.getDimensions().getHeight() / 2),
+                        Dimension(this->boundingBox.getDimensions().getLength() / 2,
+                                  this->boundingBox.getDimensions().getWidth() / 2,
+                                  boundingBox.getDimensions().getHeight() / 2)));
 
-    this->children.push_back(
-            Element(BoundingBox(Vector(boundingBox.getCenter().getX() - boundingBox.getDimensions().getLength() / 2,
-                                       boundingBox.getCenter().getY() + boundingBox.getDimensions().getWidth() / 2,
-                                       boundingBox.getCenter().getZ() + boundingBox.getDimensions().getHeight() / 2),
-                                Dimension(this->boundingBox.getDimensions().getLength() / 2,
-                                          this->boundingBox.getDimensions().getWidth() / 2,
-                                          boundingBox.getDimensions().getHeight() / 2))));
+    this->children.emplace_back(
+            BoundingBox(Vector(boundingBox.getCenter().getX() - boundingBox.getDimensions().getLength() / 2,
+                               boundingBox.getCenter().getY() + boundingBox.getDimensions().getWidth() / 2,
+                               boundingBox.getCenter().getZ() + boundingBox.getDimensions().getHeight() / 2),
+                        Dimension(this->boundingBox.getDimensions().getLength() / 2,
+                                  this->boundingBox.getDimensions().getWidth() / 2,
+                                  boundingBox.getDimensions().getHeight() / 2)));
 
-    this->children.push_back(
-            Element(BoundingBox(Vector(boundingBox.getCenter().getX() - boundingBox.getDimensions().getLength() / 2,
-                                       boundingBox.getCenter().getY() - boundingBox.getDimensions().getWidth() / 2,
-                                       boundingBox.getCenter().getZ() + boundingBox.getDimensions().getHeight() / 2),
-                                Dimension(this->boundingBox.getDimensions().getLength() / 2,
-                                          this->boundingBox.getDimensions().getWidth() / 2,
-                                          boundingBox.getDimensions().getHeight() / 2))));
+    this->children.emplace_back(
+            BoundingBox(Vector(boundingBox.getCenter().getX() - boundingBox.getDimensions().getLength() / 2,
+                               boundingBox.getCenter().getY() - boundingBox.getDimensions().getWidth() / 2,
+                               boundingBox.getCenter().getZ() + boundingBox.getDimensions().getHeight() / 2),
+                        Dimension(this->boundingBox.getDimensions().getLength() / 2,
+                                  this->boundingBox.getDimensions().getWidth() / 2,
+                                  boundingBox.getDimensions().getHeight() / 2)));
 
-    this->children.push_back(
-            Element(BoundingBox(Vector(boundingBox.getCenter().getX() + boundingBox.getDimensions().getLength() / 2,
-                                       boundingBox.getCenter().getY() - boundingBox.getDimensions().getWidth() / 2,
-                                       boundingBox.getCenter().getZ() + boundingBox.getDimensions().getHeight() / 2),
-                                Dimension(this->boundingBox.getDimensions().getLength() / 2,
-                                          this->boundingBox.getDimensions().getWidth() / 2,
-                                          boundingBox.getDimensions().getHeight() / 2))));
+    this->children.emplace_back(
+            BoundingBox(Vector(boundingBox.getCenter().getX() + boundingBox.getDimensions().getLength() / 2,
+                               boundingBox.getCenter().getY() - boundingBox.getDimensions().getWidth() / 2,
+                               boundingBox.getCenter().getZ() + boundingBox.getDimensions().getHeight() / 2),
+                        Dimension(this->boundingBox.getDimensions().getLength() / 2,
+                                  this->boundingBox.getDimensions().getWidth() / 2,
+                                  boundingBox.getDimensions().getHeight() / 2)));
 
-    this->children.push_back(
-            Element(BoundingBox(Vector(boundingBox.getCenter().getX() + boundingBox.getDimensions().getLength() / 2,
-                                       boundingBox.getCenter().getY() + boundingBox.getDimensions().getWidth() / 2,
-                                       boundingBox.getCenter().getZ() - boundingBox.getDimensions().getHeight() / 2),
-                                Dimension(this->boundingBox.getDimensions().getLength() / 2,
-                                          this->boundingBox.getDimensions().getWidth() / 2,
-                                          boundingBox.getDimensions().getHeight() / 2))));
+    this->children.emplace_back(
+            BoundingBox(Vector(boundingBox.getCenter().getX() + boundingBox.getDimensions().getLength() / 2,
+                               boundingBox.getCenter().getY() + boundingBox.getDimensions().getWidth() / 2,
+                               boundingBox.getCenter().getZ() - boundingBox.getDimensions().getHeight() / 2),
+                        Dimension(this->boundingBox.getDimensions().getLength() / 2,
+                                  this->boundingBox.getDimensions().getWidth() / 2,
+                                  boundingBox.getDimensions().getHeight() / 2)));
 
-    this->children.push_back(
-            Element(BoundingBox(Vector(boundingBox.getCenter().getX() - boundingBox.getDimensions().getLength() / 2,
-                                       boundingBox.getCenter().getY() + boundingBox.getDimensions().getWidth() / 2,
-                                       boundingBox.getCenter().getZ() - boundingBox.getDimensions().getHeight() / 2),
-                                Dimension(this->boundingBox.getDimensions().getLength() / 2,
-                                          this->boundingBox.getDimensions().getWidth() / 2,
-                                          boundingBox.getDimensions().getHeight() / 2))));
+    this->children.emplace_back(
+            BoundingBox(Vector(boundingBox.getCenter().getX() - boundingBox.getDimensions().getLength() / 2,
+                               boundingBox.getCenter().getY() + boundingBox.getDimensions().getWidth() / 2,
+                               boundingBox.getCenter().getZ() - boundingBox.getDimensions().getHeight() / 2),
+                        Dimension(this->boundingBox.getDimensions().getLength() / 2,
+                                  this->boundingBox.getDimensions().getWidth() / 2,
+                                  boundingBox.getDimensions().getHeight() / 2)));
 
-    this->children.push_back(
-            Element(BoundingBox(Vector(boundingBox.getCenter().getX() - boundingBox.getDimensions().getLength() / 2,
-                                       boundingBox.getCenter().getY() - boundingBox.getDimensions().getWidth() / 2,
-                                       boundingBox.getCenter().getZ() - boundingBox.getDimensions().getHeight() / 2),
-                                Dimension(this->boundingBox.getDimensions().getLength() / 2,
-                                          this->boundingBox.getDimensions().getWidth() / 2,
-                                          boundingBox.getDimensions().getHeight() / 2))));
+    this->children.emplace_back(
+            BoundingBox(Vector(boundingBox.getCenter().getX() - boundingBox.getDimensions().getLength() / 2,
+                               boundingBox.getCenter().getY() - boundingBox.getDimensions().getWidth() / 2,
+                               boundingBox.getCenter().getZ() - boundingBox.getDimensions().getHeight() / 2),
+                        Dimension(this->boundingBox.getDimensions().getLength() / 2,
+                                  this->boundingBox.getDimensions().getWidth() / 2,
+                                  boundingBox.getDimensions().getHeight() / 2)));
 
 
-    this->children.push_back(
-            Element(BoundingBox(Vector(boundingBox.getCenter().getX() + boundingBox.getDimensions().getLength() / 2,
-                                       boundingBox.getCenter().getY() - boundingBox.getDimensions().getWidth() / 2,
-                                       boundingBox.getCenter().getZ() - boundingBox.getDimensions().getHeight() / 2),
-                                Dimension(this->boundingBox.getDimensions().getLength() / 2,
-                                          this->boundingBox.getDimensions().getWidth() / 2,
-                                          boundingBox.getDimensions().getHeight() / 2))));
+    this->children.emplace_back(
+            BoundingBox(Vector(boundingBox.getCenter().getX() + boundingBox.getDimensions().getLength() / 2,
+                               boundingBox.getCenter().getY() - boundingBox.getDimensions().getWidth() / 2,
+                               boundingBox.getCenter().getZ() - boundingBox.getDimensions().getHeight() / 2),
+                        Dimension(this->boundingBox.getDimensions().getLength() / 2,
+                                  this->boundingBox.getDimensions().getWidth() / 2,
+                                  boundingBox.getDimensions().getHeight() / 2)));
 }
 
 void Element::displayElement() {
