@@ -4,7 +4,9 @@
 
 #include "body.h"
 
-Body::Body(string name, string type, double mass, PositionVector position, PositionVector velocity, PositionVector acceleration){
+Body::Body(string name, string type, double mass, PositionVector position, PositionVector velocity,
+           PositionVector acceleration) {
+    spdlog::debug("Initializing Body instance for {}", name);
     this->name = name;
     this->type = type;
     this->mass = mass;
@@ -13,7 +15,7 @@ Body::Body(string name, string type, double mass, PositionVector position, Posit
     this->acceleration = acceleration;
 }
 
-string Body::get_name(){
+string Body::get_name() {
     return name;
 }
 
@@ -21,11 +23,11 @@ string Body::get_type() {
     return type;
 }
 
-double Body::get_mass(){
+double Body::get_mass() {
     return mass;
 }
 
-PositionVector Body::get_position(){
+PositionVector Body::get_position() {
     return position;
 }
 
@@ -37,14 +39,14 @@ PositionVector Body::get_accerleration() {
     return acceleration;
 }
 
-void Body::set_position(PositionVector position){
+void Body::set_position(PositionVector position) {
     this->position = position;
 }
 
-void Body::set_velocity(PositionVector velocity){
+void Body::set_velocity(PositionVector velocity) {
     this->velocity = velocity;
 }
 
-void Body::set_acceleration(PositionVector acceleration){
+void Body::set_acceleration(PositionVector acceleration) {
     this->acceleration = acceleration;
 }

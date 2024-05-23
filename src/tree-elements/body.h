@@ -2,6 +2,7 @@
 // Created by C G Giridhar on 20/05/24.
 //
 #include <string>
+#include <spdlog/spdlog.h>
 
 #include "../units/position_vector.h"
 
@@ -20,7 +21,8 @@ private:
     PositionVector acceleration;
 
 public:
-    Body(string name, string type, double mass, PositionVector position, PositionVector velocity, PositionVector acceleration);
+    Body(string name, string type, double mass, PositionVector position, PositionVector velocity,
+         PositionVector acceleration);
 
     string get_name();
 
@@ -31,7 +33,7 @@ public:
     PositionVector get_position();
 
     PositionVector get_velocity();
-    
+
     PositionVector get_accerleration();
 
     void set_position(PositionVector position);

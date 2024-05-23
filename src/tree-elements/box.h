@@ -12,12 +12,13 @@
 #include "../units/dimension.h"
 
 #include<iostream>
+
 using namespace std;
 
-enum BOX_TYPE{
+enum BOX_TYPE {
     ROOT,
     INTERNAL,
-    LEAF 
+    LEAF
 };
 
 
@@ -32,6 +33,7 @@ private:
     vector<Box> sub_boxes;
 
     void GenerateChildren();
+
     void UpdateCenterOfMass();
 
 public:
@@ -41,8 +43,8 @@ public:
 
     double get_total_mass();
 
-    Body* get_body();
-    
+    Body *get_body();
+
     PositionVector get_center();
 
     PositionVector get_center_of_mass();
