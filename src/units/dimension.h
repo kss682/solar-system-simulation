@@ -6,28 +6,27 @@
 #define SOLAR_SYS_SIM_DIMENSION_H
 
 #include <cmath>
+using namespace std;
 
 class Dimension {
 private:
     double length;
-    double width;
     double height;
+    double depth;
 public:
     Dimension();
 
-    Dimension(double length, double width, double height);
+    Dimension(double length, double height, double depth);
 
-    Dimension(double unit);
+    // Dimension(Dimension &d);
 
-    Dimension(Dimension const &d);
+    double get_length();
 
-    double getLength() const;
+    double get_depth();
 
-    double getWidth() const;
+    double get_height();
 
-    double getHeight() const;
-
-    double getMaxValue() const;
+    double GetMaxValue();
 };
 
 

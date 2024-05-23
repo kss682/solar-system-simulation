@@ -1,6 +1,8 @@
 #include<iostream>
 #include<vector>
-#include "node.hpp"
+
+#include "tree-elements/box.h"
+#include "units/dimension.h"
 using namespace std;
 
 #ifndef BARNES_HPP
@@ -9,19 +11,19 @@ using namespace std;
 class BarnesHut{
     public:
     BarnesHut(vector<Body> bodies);
-    void clear_oct_tree();
-    void compute_bounding_box();
-    void construct_oct_tree();
-    void compute_forces();
-    void display_tree();
-    void display_node(Node node);
+    void ClearOctTree();
+    void ComputeBoundingBox();
+    void ConstructOctTree();
+    void ComputeForces();
+    void DisplayTree();
+    void DisplayBox(Box box);
 
     private: 
     double theta;
     double delta;
-    double bb_width, bb_height, bb_breadth;
+    Dimension dimension;
     
-    Node *root;
+    Box *root;
     vector<Body> bodies;
 };
 

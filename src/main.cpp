@@ -5,9 +5,8 @@
 #include<string>
 #include<vector>
 
-#include "tree-elements/Body.h"
-#include "tree-elements/Element.h"
-#include "Tree_Creator.h"
+#include "tree-elements/body.h"
+#include "barnes_hut.hpp"
 
 using namespace std;
 
@@ -30,8 +29,8 @@ void read_csv(string filename) {
             }
             values.push_back(line);
             Body body = Body(values[1], values[2], stod(values[3]),
-                             Vector(stod(values[4]), stod(values[5]), stod(values[6])),
-                             Vector(stod(values[7]), stod(values[8]), stod(values[9])), Vector());
+                             PositionVector(stod(values[4]), stod(values[5]), stod(values[6])),
+                             PositionVector(stod(values[7]), stod(values[8]), stod(values[9])), PositionVector());
             BODIES.push_back(body);
         }
         myfile.close();
@@ -39,27 +38,14 @@ void read_csv(string filename) {
 }
 
 int main(int argc, char *argv[]) {
-    FILENAME = "/Users/giridhar/Code/Fachpratikum/solar-system-stimulation/data/planets.csv";
+    FILENAME = "";
 
     read_csv(FILENAME);
 
-    Tree_Creator barnes_hut = Tree_Creator(BODIES);
-
-    // barnes_hut.clear_oct_tree();
-    barnes_hut.computeBoundingBox();
-    barnes_hut.constructOctTree();
-    // barnes_hut.compute_forces();
-    barnes_hut.displayTree();
-
-//    BarnesHut barnes_hut = BarnesHut(BODIES);
-//
-//    // barnes_hut.clear_oct_tree();
-//    barnes_hut.compute_bounding_box();
-//    barnes_hut.construct_oct_tree();
-//    // barnes_hut.compute_forces();
-//    barnes_hut.display_tree();
-//    barnes_hut.clear_oct_tree();
-//    barnes_hut.display_tree();
+    BarnesHut barnes_hut = BarnesHut(BODIES);
+    barnes_hut.ComputeBoundingBox();
+    barnes_hut.ConstructOctTree();    
+    barnes_hut.DisplayTree();
 
     return 0;
 }

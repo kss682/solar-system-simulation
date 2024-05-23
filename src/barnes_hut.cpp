@@ -2,48 +2,40 @@
 
 BarnesHut::BarnesHut(vector<Body> bodies){
     this->bodies = bodies;
-    this->bb_breadth = 0;
-    this->bb_height = 0;
-    this->bb_width = 0;
-
     this->root = nullptr;
 }
 
-void BarnesHut::clear_oct_tree(){
+void BarnesHut::ClearOctTree(){
     return;
 }
 
-void BarnesHut::compute_bounding_box(){
+
+void BarnesHut::ComputeBoundingBox(){
+    double max_bb = 0;
     for(auto body: this->bodies){
-        this->bb_width = (double) abs(max(this->bb_width, abs(body.pos[0]))) + 1;
-        this->bb_height = (double) abs(max(this->bb_height, abs(body.pos[1]))) + 1;
-        this->bb_breadth = (double) abs(max(this->bb_breadth, abs(body.pos[2]))) + 1;
+        max_bb = fmax(max_bb, body.get_position().GetMaxAbsoluteValue());
     }
 
-    cout<<this->bb_width<<" "<<this->bb_height<<" "<<this->bb_breadth<<endl;
+    this->dimension = Dimension(max_bb, max_bb, max_bb);
 }
 
-void BarnesHut::construct_oct_tree(){
+void BarnesHut::ConstructOctTree(){
     for(int i = 0; i < this->bodies.size(); i++){
-        cout<<"Adding "<<this->bodies[i].name<<" to oct tree"<<endl;
-        if(this->root==nullptr) this->root = new Node(this->bb_width, this->bb_height, this->bb_breadth, 0, 0, 0);
-        this->root->add_body(this->bodies[i]);
-    }
-}
-
-void BarnesHut::compute_forces(){
-    return;
-}
-
-void BarnesHut::display_tree(){
-    display_node(*(this->root));
-}
-
-void BarnesHut::display_node(Node node){
-    node.display_node();
-    for(int i = 0; i < node.get_children().size(); i++){
-        this->display_node(node.get_children()[i]);
+        cout<<"Adding "<<this->bodies[i].get_name()<<" to oct tree"<<endl;
+        if(this->root==nullptr) this->root = new Box(PositionVector(0, 0, 0), this->dimension);
+        this->root->AddBody(this->bodies[i]);
     }
 }
 
 
+
+void BarnesHut::DisplayTree(){
+    DisplayBox(*(this->root));
+}
+
+void BarnesHut::DisplayBox(Box box){
+    box.DisplayBox();
+    for(int i = 0; i < box.get_sub_boxes().size(); i++){
+        this->DisplayBox(box.get_sub_boxes()[i]);
+    }
+}
