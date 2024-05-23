@@ -4,15 +4,13 @@ project(solar_sys_sim)
 set(CMAKE_CXX_STANDARD 23)
 
 add_executable(solar_sys_sim src/main.cpp
-        src/units/Vector.h
-        src/units/Vector.cpp
-        src/units/Dimension.h
-        src/units/Dimension.cpp
-        src/tree-elements/Element.h
-        src/tree-elements/Element.cpp
-        src/tree-elements/Body.h
-        src/tree-elements/Body.cpp
-        src/tree-elements/BoundingBox.h
-        src/tree-elements/BoundingBox.cpp
-        src/Tree_Creator.h
-        src/Tree_Creator.cpp)
+        src/units/dimension.cpp
+        src/units/dimension.h
+        src/units/position_vector.cpp
+        src/units/position_vector.h
+        src/tree-elements/box.cpp
+        src/tree-elements/box.h
+        src/tree-elements/body.cpp
+        src/tree-elements/body.h
+        src/barnes_hut.cpp
+        src/barnes_hut.hpp)
