@@ -30,6 +30,8 @@ public:
 
     PositionVector& operator+=(PositionVector rhs);
 
+    PositionVector operator-(PositionVector rhs);
+
     PositionVector operator*(double unit);
 
     PositionVector operator/(double unit);

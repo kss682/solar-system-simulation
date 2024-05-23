@@ -50,6 +50,10 @@ PositionVector& PositionVector::operator+=(PositionVector rhs){
     return *this;
 }
 
+PositionVector PositionVector::operator-(PositionVector rhs) {
+    return {x - rhs.x, y - rhs.y, z - rhs.z};
+}
+
 PositionVector PositionVector::operator*(double unit){
     return {this->x * unit, this->y * unit, this->z * unit};
 }

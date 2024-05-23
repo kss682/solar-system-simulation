@@ -38,13 +38,15 @@ void read_csv(string filename) {
 }
 
 int main(int argc, char *argv[]) {
-    FILENAME = "";
+    FILENAME = "/home/srinidhi/MyWork/SolarSystemStimulation/data/planets.csv";
 
     read_csv(FILENAME);
 
     BarnesHut barnes_hut = BarnesHut(BODIES);
     barnes_hut.ComputeBoundingBox();
-    barnes_hut.ConstructOctTree();    
+    barnes_hut.ConstructOctTree();
+    barnes_hut.DisplayTree();
+    barnes_hut.ComputeMotion();
     barnes_hut.DisplayTree();
 
     return 0;

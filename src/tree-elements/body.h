@@ -33,6 +33,12 @@ public:
     PositionVector get_velocity();
     
     PositionVector get_accerleration();
+
+    void set_position(PositionVector position);
+
+    void set_velocity(PositionVector velocity);
+
+    void set_acceleration(PositionVector acceleration);
 };
 
 

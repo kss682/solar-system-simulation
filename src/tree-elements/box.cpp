@@ -100,14 +100,16 @@ void Box::AddBody(Body &body){
 }
 
 void Box::DisplayBox(){
-    cout<<"Bounding box: "<<this->get_dimensions().get_length()<<" "<<this->get_dimensions().get_height()<<" "<<this->get_dimensions().get_depth()<<endl;
-    cout<<"Box Mass: "<<this->get_total_mass()<<endl;
-    cout<<"Center of Mass: "<<this->get_center_of_mass().get_x()<<" "<<this->get_center_of_mass().get_y()<<" "<<this->get_center_of_mass().get_z()<<endl;
+    // cout<<"Bounding box: "<<this->get_dimensions().get_length()<<" "<<this->get_dimensions().get_height()<<" "<<this->get_dimensions().get_depth()<<endl;
+    // cout<<"Box Mass: "<<this->get_total_mass()<<endl;
+    // cout<<"Center of Mass: "<<this->get_center_of_mass().get_x()<<" "<<this->get_center_of_mass().get_y()<<" "<<this->get_center_of_mass().get_z()<<endl;
     
     if(this->get_body() != nullptr) {
         cout<<"Body name: "<<this->get_body()->get_name()<<endl;
-        cout<<"Body pos: "<<this->get_body()->get_position().get_x()<<" "<<this->get_body()->get_position().get_y()<<" "<<this->get_body()->get_position().get_z()<<endl;
         cout<<"Total Mass: "<<this->get_body()->get_mass()<<endl;
+        cout<<"Body pos: "<<this->get_body()->get_position().get_x()<<" "<<this->get_body()->get_position().get_y()<<" "<<this->get_body()->get_position().get_z()<<endl;
+        cout<<"Body velocity: "<<this->get_body()->get_velocity().get_x()<<" "<<this->get_body()->get_velocity().get_y()<<" "<<this->get_body()->get_velocity().get_z()<<endl;
+        cout<<"Acc: "<<this->get_body()->get_accerleration().get_x()<<" "<<this->get_body()->get_accerleration().get_y()<<" "<<this->get_body()->get_accerleration().get_z()<<endl;
     }
 }
 
