@@ -7,9 +7,9 @@
 using namespace std;
 
 Dimension::Dimension(double length, double height, double depth) {
-  this->length = length;  
-  this->height = height;
-  this->depth = depth;
+    this->length = length;
+    this->height = height;
+    this->depth = depth;
 }
 
 Dimension::Dimension() {

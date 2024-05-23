@@ -6,6 +6,7 @@
 #define SOLAR_SYS_SIM_DIMENSION_H
 
 #include <cmath>
+
 using namespace std;
 
 class Dimension {

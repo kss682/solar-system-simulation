@@ -4,7 +4,7 @@
 
 #include "position_vector.h"
 
-PositionVector::PositionVector(double x, double y, double z){
+PositionVector::PositionVector(double x, double y, double z) {
     this->x = x;
     this->y = y;
     this->z = z;
@@ -34,7 +34,7 @@ double PositionVector::get_z() {
     return z;
 }
 
-double PositionVector::GetMaxAbsoluteValue(){
+double PositionVector::GetMaxAbsoluteValue() {
     return fmax(this->x, fmax(this->y, this->z));
 }
 
@@ -42,7 +42,7 @@ PositionVector PositionVector::operator+(PositionVector rhs) {
     return {x + rhs.x, y + rhs.y, z + rhs.z};
 }
 
-PositionVector& PositionVector::operator+=(PositionVector rhs){
+PositionVector &PositionVector::operator+=(PositionVector rhs) {
     this->x += rhs.get_x();
     this->y += rhs.get_y();
     this->z += rhs.get_z();
@@ -54,7 +54,7 @@ PositionVector PositionVector::operator-(PositionVector rhs) {
     return {x - rhs.x, y - rhs.y, z - rhs.z};
 }
 
-PositionVector PositionVector::operator*(double unit){
+PositionVector PositionVector::operator*(double unit) {
     return {this->x * unit, this->y * unit, this->z * unit};
 }
 

@@ -2,6 +2,7 @@
 // Created by C G Giridhar on 20/05/24.
 //
 #include<cmath>
+
 using namespace std;
 #ifndef SOLAR_SYS_SIM_PositionVector_H
 #define SOLAR_SYS_SIM_PositionVector_H
@@ -28,7 +29,7 @@ public:
 
     PositionVector operator+(PositionVector rhs);
 
-    PositionVector& operator+=(PositionVector rhs);
+    PositionVector &operator+=(PositionVector rhs);
 
     PositionVector operator-(PositionVector rhs);
 

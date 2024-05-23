@@ -1,5 +1,6 @@
 #include<iostream>
 #include<vector>
+#include <spdlog/spdlog.h>
 
 #include "tree-elements/box.h"
 #include "units/dimension.h"
