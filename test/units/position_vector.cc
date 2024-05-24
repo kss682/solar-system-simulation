@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../../../src/units/position_vector.h"
+#include "../../src/units/position_vector.h"
 
 
 TEST(PositionVector, ParameterizedConstructor) {

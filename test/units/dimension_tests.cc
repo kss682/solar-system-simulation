@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../../../src/units/dimension.h"
+#include "../../src/units/dimension.h"
 
 TEST(Dimension, ParameterizedConstructor) {
     auto *dimension = new Dimension(2.0, 4.0, 8.0);

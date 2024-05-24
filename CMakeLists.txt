@@ -51,8 +51,8 @@ add_executable(
         src/units/position_vector.cpp
         src/units/position_vector.h
         test/test.cc
-        test/units/dimension/dimension_tests.cc
-        test/units/dimension/position_vector.cc
+        test/units/dimension_tests.cc
+        test/units/position_vector.cc
 )
 target_link_libraries(
         solar_system_stimulation_test
