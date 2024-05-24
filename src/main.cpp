@@ -59,6 +59,6 @@ int main(int argc, char *argv[]) {
     barnes_hut.DisplayTree();
     barnes_hut.ComputeMotion();
     barnes_hut.DisplayTree();
-
+    barnes_hut.CreateVtkFile();
     return 0;
 }
