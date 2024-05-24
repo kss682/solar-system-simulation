@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 
     spdlog::info("Starting the simulation");
 
-    FILENAME = "/home/srinidhi/MyWork/SolarSystemStimulation/data/planets.csv";;
+    FILENAME = "/Users/giridhar/Code/Fachpratikum/solar-system-stimulation/data/planets.csv";
     spdlog::info("Loading file from : {}", FILENAME);
 
     read_csv(FILENAME);
