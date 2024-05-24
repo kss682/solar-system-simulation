@@ -18,20 +18,22 @@ WORKDIR /solar-system-stimulation/build
 RUN cmake -DCMAKE_BUILD_TYPE=Release .. && \
     cmake --build .
 
+RUN ./solar_system_stimulation_test
+
 FROM alpine:latest
 
 RUN apk update && \
     apk add --no-cache \
     libstdc++
 
-RUN addgroup -S shs && adduser -S shs -G shs
-USER shs
+RUN addgroup -S sim && adduser -S sim -G sim
+USER sim
 
 
-COPY --chown=shs:shs --from=build \
+COPY --chown=sim:sim --from=build \
     ./solar-system-stimulation/build ./app
 
-COPY --chown=shs:shs --from=build \
+COPY --chown=sim:sim --from=build \
     ./solar-system-stimulation/data ./data
 
 ENTRYPOINT [ "/app/solar_system_stimulation" ]
