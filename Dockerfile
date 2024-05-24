@@ -27,10 +27,7 @@ RUN sed -i '/set(VTK_DIR/c\set(VTK_DIR /usr/lib64/cmake/vtk)' CMakeLists.txt
 WORKDIR /solar-system-stimulation/build
 
 # Run cmake and build the project
-RUN cmake -DCMAKE_BUILD_TYPE=Release  \
-    -DVTK_MODULE_ENABLE_VTK_GuiSupportQt=DONT_WANT \
-    -DVTK_MODULE_ENABLE_VTK_ViewsQt=DONT_WANT \
-    .. && \
+RUN cmake -DCMAKE_BUILD_TYPE=Release .. && \
     cmake --build .
 
 # Run tests
@@ -55,4 +52,4 @@ COPY --chown=sim:sim --from=build /solar-system-stimulation/build /app
 COPY --chown=sim:sim --from=build /solar-system-stimulation/data /data
 
 # Set the entrypoint
-#ENTRYPOINT [ "/app/solar_system_stimulation" ]
+ENTRYPOINT [ "/app/solar_system_stimulation" ]
