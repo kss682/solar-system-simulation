@@ -4,6 +4,12 @@
 
 #include "tree-elements/box.h"
 #include "units/dimension.h"
+
+#include <vtkSmartPointer.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataWriter.h>
+
 using namespace std;
 
 #ifndef BARNES_HPP
@@ -18,6 +24,8 @@ class BarnesHut{
     void ComputeMotion();
     void DisplayTree();
     void DisplayBox(Box box);
+    void CreateVtkFile();
+    void AddPoint(const vtkSmartPointer<vtkPoints>& points, Box *box, long long counter);
 
     private: 
     double G = 6.67430e-11;

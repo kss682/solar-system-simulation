@@ -1,0 +1,6 @@
+# vtk DataFile Version 5.1
+vtk output
+ASCII
+DATASET POLYDATA
+POINTS 1 float
+-1.31506e+21 -3.63224e+20 9.68198e+18 

@@ -46,7 +46,7 @@ int main(int argc, char *argv[]) {
 
     spdlog::info("Starting the simulation");
 
-    FILENAME = "/home/srinidhi/MyWork/SolarSystemStimulation/data/planets.csv";;
+    FILENAME = "../data/planets.csv";
     spdlog::info("Loading file from : {}", FILENAME);
 
     read_csv(FILENAME);
@@ -59,6 +59,6 @@ int main(int argc, char *argv[]) {
     barnes_hut.DisplayTree();
     barnes_hut.ComputeMotion();
     barnes_hut.DisplayTree();
-
+    barnes_hut.CreateVtkFile();
     return 0;
 }

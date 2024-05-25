@@ -108,3 +108,28 @@ void BarnesHut::DisplayBox(Box box) {
         this->DisplayBox(box.get_sub_boxes()[i]);
     }
 }
+
+void BarnesHut::CreateVtkFile() {
+    vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
+    long long counter = 0;
+    AddPoint(points, root, counter);
+    vtkSmartPointer<vtkPolyData> polydata = vtkSmartPointer<vtkPolyData>::New();
+
+    // Set the points to the polydata object
+    polydata->SetPoints(points);
+
+    // Write the polydata to a .vtk file
+    vtkSmartPointer<vtkPolyDataWriter> writer = vtkSmartPointer<vtkPolyDataWriter>::New();
+    writer->SetFileName("../data/points.vtk");
+    writer->SetInputData(polydata);
+    writer->Write();
+}
+
+void BarnesHut::AddPoint(const vtkSmartPointer<vtkPoints>& points, Box *box, long long counter) {
+    if(box->get_body() != nullptr) {
+        points->InsertPoint(counter++, box->get_body()->get_position().get_x(), box->get_body()->get_position().get_y(), box->get_body()->get_position().get_z());
+    }
+    for (auto subBox : box->get_sub_boxes()) {
+        AddPoint(points, &subBox, counter);
+    }
+}
