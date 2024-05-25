@@ -111,25 +111,41 @@ void BarnesHut::DisplayBox(Box box) {
 
 void BarnesHut::CreateVtkFile() {
     vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-    long long counter = 0;
-    AddPoint(points, root, counter);
+    AddPoint(points, root);
     vtkSmartPointer<vtkPolyData> polydata = vtkSmartPointer<vtkPolyData>::New();
-
     // Set the points to the polydata object
     polydata->SetPoints(points);
 
-    // Write the polydata to a .vtk file
-    vtkSmartPointer<vtkPolyDataWriter> writer = vtkSmartPointer<vtkPolyDataWriter>::New();
-    writer->SetFileName("../data/points.vtk");
-    writer->SetInputData(polydata);
+    vtkSmartPointer<vtkSphereSource> sphereSource = vtkSmartPointer<vtkSphereSource>::New();
+    sphereSource->SetRadius(1.0); // Adjust the radius as needed
+    sphereSource->SetThetaResolution(16); // Adjust the resolution as needed
+    sphereSource->SetPhiResolution(16);
+
+    vtkSmartPointer<vtkGlyph3D> glyphFilter = vtkSmartPointer<vtkGlyph3D>::New();
+    glyphFilter->SetSourceConnection(sphereSource->GetOutputPort());
+    glyphFilter->SetInputData(polydata);
+    glyphFilter->SetScaleModeToDataScalingOff(); // Use the same size for all spheres
+    glyphFilter->Update();
+
+    // Write the output to a .vtp file
+    vtkSmartPointer<vtkXMLPolyDataWriter> writer = vtkSmartPointer<vtkXMLPolyDataWriter>::New();
+    writer->SetFileName("../data/spheres.vtp");
+    writer->SetInputData(glyphFilter->GetOutput());
     writer->Write();
+
+//    // Write the polydata to a .vtk file
+//    vtkSmartPointer<vtkPolyDataWriter> writer = vtkSmartPointer<vtkPolyDataWriter>::New();
+//    writer->SetFileName("../data/points.vtp");
+//    writer->SetInputData(polydata);
+//    writer->Write();
 }
 
-void BarnesHut::AddPoint(const vtkSmartPointer<vtkPoints>& points, Box *box, long long counter) {
-    if(box->get_body() != nullptr) {
-        points->InsertPoint(counter++, box->get_body()->get_position().get_x(), box->get_body()->get_position().get_y(), box->get_body()->get_position().get_z());
+void BarnesHut::AddPoint(const vtkSmartPointer<vtkPoints> &points, Box *box) {
+    if (box->get_body() != nullptr) {
+        points->InsertNextPoint(box->get_body()->get_position().get_x()/100,
+                                box->get_body()->get_position().get_y()/100, box->get_body()->get_position().get_z()/100);
     }
-    for (auto subBox : box->get_sub_boxes()) {
-        AddPoint(points, &subBox, counter);
+    for (auto subBox: box->get_sub_boxes()) {
+        AddPoint(points, &subBox);
     }
 }

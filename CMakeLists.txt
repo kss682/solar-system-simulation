@@ -38,8 +38,12 @@ set(VTK_DIR /opt/homebrew/lib/cmake/vtk-9.3/)
 find_package(VTK REQUIRED COMPONENTS CommonCore
         CommonDataModel
         FiltersCore
+        FiltersSources
         IOXML
         IOLegacy)
+
+# Include the VTK setup
+include(${VTK_USE_FILE})
 
 add_executable(solar_system_stimulation src/main.cpp
         src/units/dimension.cpp
