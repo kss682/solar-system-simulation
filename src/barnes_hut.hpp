@@ -9,6 +9,9 @@
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
 #include <vtkPolyDataWriter.h>
+#include <vtkSphereSource.h>
+#include <vtkGlyph3D.h>
+#include <vtkXMLPolyDataWriter.h>
 
 using namespace std;
 
@@ -25,16 +28,16 @@ class BarnesHut{
     void DisplayTree();
     void DisplayBox(Box box);
     void CreateVtkFile();
-    void AddPoint(const vtkSmartPointer<vtkPoints>& points, Box *box, long long counter);
+    void AddPoint(const vtkSmartPointer<vtkPoints>& points, Box *box);
 
-    private: 
+    private:
     double G = 6.67430e-11;
     double theta;
     double delta = 25000;
     double threshold = 0.5;
     double epsilon = 1e-11;
     Dimension dimension;
-    
+
     Box *root;
     vector<Body> bodies;
 
