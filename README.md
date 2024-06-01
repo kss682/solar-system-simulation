@@ -1,2 +1,2 @@
-# solar-system-stimulation
-A project to stimulate solar system using the Barnes Hut Algorithm. 
+# solar-system-simulation
+A project to simulate solar system using the Barnes Hut Algorithm. 
