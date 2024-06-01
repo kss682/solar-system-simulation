@@ -1,2 +1,6 @@
 bin/
 .vscode/
+.idea/*
+cmake-build-debug/*
+CMakeFiles/*
+cmake-build-debug-coverage/*

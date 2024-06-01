@@ -1,6 +1,18 @@
 #include<iostream>
 #include<vector>
-#include "node.hpp"
+#include <spdlog/spdlog.h>
+
+#include "tree-elements/box.h"
+#include "units/dimension.h"
+
+#include <vtkSmartPointer.h>
+#include <vtkPoints.h>
+#include <vtkPolyData.h>
+#include <vtkPolyDataWriter.h>
+#include <vtkSphereSource.h>
+#include <vtkGlyph3D.h>
+#include <vtkXMLPolyDataWriter.h>
+
 using namespace std;
 
 #ifndef BARNES_HPP
@@ -9,20 +21,31 @@ using namespace std;
 class BarnesHut{
     public:
     BarnesHut(vector<Body> bodies);
-    void clear_oct_tree();
-    void compute_bounding_box();
-    void construct_oct_tree();
-    void compute_forces();
-    void display_tree();
-    void display_node(Node node);
+    void ClearOctTree();
+    void ComputeBoundingBox();
+    void ConstructOctTree();
+    void ComputeMotion();
+    void DisplayTree();
+    void DisplayBox(Box box);
+    void CreateVtkFile();
+    void AddPoint(const vtkSmartPointer<vtkPoints>& points, Box *box);
 
-    private: 
+    private:
+    double G = 6.67430e-11;
     double theta;
-    double delta;
-    double bb_width, bb_height, bb_breadth;
-    
-    Node *root;
+    double delta = 25000;
+    double threshold = 0.5;
+    double epsilon = 1e-11;
+    Dimension dimension;
+
+    Box *root;
     vector<Body> bodies;
+
+    void Traverse(Body &body, Box &box);
+    bool Threshold(Body body, PositionVector center_of_mass, Dimension dim);
+    void ComputeAcceleration(Body &body1, double mass, PositionVector r2);
+    void UpdateVelocity(Body &body);
+    void UpdatePosition(Body &body);
 };
 
 #endif
