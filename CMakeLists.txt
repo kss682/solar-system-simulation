@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.22)
 project(solar_system_stimulation)
 
 set(CMAKE_CXX_STANDARD 23)
@@ -34,7 +34,7 @@ set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 
-set(VTK_DIR /opt/homebrew/lib/cmake/vtk-9.3/)
+set(VTK_DIR /usr/lib/x86_64-linux-gnu/cmake/vtk-9.1)
 find_package(VTK REQUIRED COMPONENTS CommonCore
         CommonDataModel
         FiltersCore

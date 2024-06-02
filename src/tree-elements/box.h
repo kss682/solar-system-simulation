@@ -41,6 +41,8 @@ public:
 
     Box();
 
+    ~Box();
+
     double get_total_mass();
 
     Body *get_body();

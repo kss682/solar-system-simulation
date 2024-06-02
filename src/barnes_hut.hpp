@@ -6,12 +6,14 @@
 #include "units/dimension.h"
 
 #include <vtkSmartPointer.h>
+#include <vtkCellArray.h>
 #include <vtkPoints.h>
 #include <vtkPolyData.h>
-#include <vtkPolyDataWriter.h>
+#include <vtkNew.h>
 #include <vtkSphereSource.h>
 #include <vtkGlyph3D.h>
 #include <vtkXMLPolyDataWriter.h>
+
 
 using namespace std;
 
@@ -24,23 +26,28 @@ class BarnesHut{
     void ClearOctTree();
     void ComputeBoundingBox();
     void ConstructOctTree();
+    void UpdateInitialVelocity();
     void ComputeMotion();
-    void DisplayTree();
-    void DisplayBox(Box box);
+    void Display();
+    void UpdateKE();
+    void UpdatePE();
     void CreateVtkFile();
-    void AddPoint(const vtkSmartPointer<vtkPoints>& points, Box *box);
 
     private:
-    double G = 6.67430e-11;
+    double G = 1.48818517e-34;
     double theta;
-    double delta = 25000;
-    double threshold = 0.5;
+    double delta = 1;
+    double threshold = 1.5;
     double epsilon = 1e-11;
+    double KE = 0;
+    double PE = 0;
     Dimension dimension;
 
     Box *root;
     vector<Body> bodies;
 
+    double EuclideanDistance(PositionVector r1, PositionVector r2);
+    void ClearBox(Box *box);
     void Traverse(Body &body, Box &box);
     bool Threshold(Body body, PositionVector center_of_mass, Dimension dim);
     void ComputeAcceleration(Body &body1, double mass, PositionVector r2);
