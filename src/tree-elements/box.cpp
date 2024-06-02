@@ -14,6 +14,10 @@ Box::Box() {
     this->dimension = Dimension();
 }
 
+Box::~Box(){
+
+}
+
 double Box::get_total_mass() {
     return this->total_mass;
 }
@@ -108,10 +112,6 @@ void Box::AddBody(Body &body) {
 }
 
 void Box::DisplayBox() {
-    // cout<<"Bounding box: "<<this->get_dimensions().get_length()<<" "<<this->get_dimensions().get_height()<<" "<<this->get_dimensions().get_depth()<<endl;
-    // cout<<"Box Mass: "<<this->get_total_mass()<<endl;
-    // cout<<"Center of Mass: "<<this->get_center_of_mass().get_x()<<" "<<this->get_center_of_mass().get_y()<<" "<<this->get_center_of_mass().get_z()<<endl;
-
     if (this->get_body() != nullptr) {
         spdlog::info("Body Name : {}", this->get_body()->get_name());
         spdlog::info("Total Mass : {}", this->get_body()->get_mass());

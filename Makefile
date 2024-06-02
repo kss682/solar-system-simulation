@@ -1,3 +1,0 @@
-SRCDIR=src
-BINDIR=bin
-

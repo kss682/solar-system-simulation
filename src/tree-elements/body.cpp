@@ -39,14 +39,18 @@ PositionVector Body::get_accerleration() {
     return acceleration;
 }
 
-void Body::set_position(PositionVector position) {
-    this->position = position;
-}
-
-void Body::set_velocity(PositionVector velocity) {
+void Body::set_velocity(PositionVector get_velocity){
     this->velocity = velocity;
 }
 
-void Body::set_acceleration(PositionVector acceleration) {
-    this->acceleration = acceleration;
+void Body::update_position(PositionVector position) {
+    this->position += position;
+}
+
+void Body::update_velocity(PositionVector velocity) {
+    this->velocity += velocity;
+}
+
+void Body::update_acceleration(PositionVector acceleration) {
+    this->acceleration += acceleration;
 }

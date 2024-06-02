@@ -13,6 +13,7 @@ using namespace std;
 
 string FILENAME;
 vector<Body> BODIES;
+double AU = 1.49597870691e11;
 
 void read_csv(string filename) {
     spdlog::info("Starting to read from CSV");
@@ -46,7 +47,7 @@ int main(int argc, char *argv[]) {
 
     spdlog::info("Starting the simulation");
 
-    FILENAME = "../data/planets.csv";
+    FILENAME = "./data/planets.csv";
     spdlog::info("Loading file from : {}", FILENAME);
 
     read_csv(FILENAME);
@@ -56,9 +57,12 @@ int main(int argc, char *argv[]) {
     BarnesHut barnes_hut = BarnesHut(BODIES);
     barnes_hut.ComputeBoundingBox();
     barnes_hut.ConstructOctTree();
-    barnes_hut.DisplayTree();
+    barnes_hut.UpdateInitialVelocity();
     barnes_hut.ComputeMotion();
-    barnes_hut.DisplayTree();
+    barnes_hut.UpdateKE();
+    barnes_hut.UpdatePE();
+    barnes_hut.Display();
     barnes_hut.CreateVtkFile();
+    barnes_hut.ClearOctTree();
     return 0;
 }

@@ -6,9 +6,17 @@ BarnesHut::BarnesHut(vector<Body> bodies) {
 }
 
 void BarnesHut::ClearOctTree() {
-    return;
+    spdlog::info("Clearing Oct tree");
+    ClearBox(this->root);
 }
 
+void BarnesHut::ClearBox(Box *box){
+    if(box->get_sub_boxes().size() == 0) { delete box; return; }
+
+    for(auto sub_box = box->get_sub_boxes().begin(); sub_box != box->get_sub_boxes().end(); sub_box++){
+        if(sub_box != nullptr) ClearBox(sub_box);
+    }
+}
 
 void BarnesHut::ComputeBoundingBox() {
     spdlog::info("Computing bounding box");
@@ -32,6 +40,19 @@ void BarnesHut::ConstructOctTree() {
     }
 }
 
+void BarnesHut::UpdateInitialVelocity(){
+    PositionVector momentum(0, 0, 0);
+    double total_mass = 0;
+    for(auto &body: bodies) {
+        momentum += body.get_velocity()*body.get_mass();
+        total_mass += body.get_mass();
+    }
+
+    for(auto &body: bodies){
+        body.set_velocity((momentum - body.get_velocity()*body.get_mass())/(total_mass - body.get_mass()));
+    }
+}
+
 void BarnesHut::ComputeMotion() {
     spdlog::info("Computing Motion forces");
     for (int i = 0; i < this->bodies.size(); i++) {
@@ -40,6 +61,7 @@ void BarnesHut::ComputeMotion() {
         UpdateVelocity(bodies[i]);
         UpdatePosition(bodies[i]);
     }
+
 }
 
 void BarnesHut::Traverse(Body &body, Box &box) {
@@ -70,8 +92,7 @@ void BarnesHut::Traverse(Body &body, Box &box) {
 }
 
 bool BarnesHut::Threshold(Body body, PositionVector center_of_mass, Dimension dim) {
-    PositionVector temp = body.get_position() - center_of_mass;
-    double th = sqrt(pow(temp.get_x(), 2) + pow(temp.get_y(), 2) + pow(temp.get_z(), 2)) / (2 * dim.get_length());
+    double th = EuclideanDistance(body.get_position(), center_of_mass) / (2 * dim.get_length());
 
     if (th <= this->threshold) true;
     return false;
@@ -79,73 +100,77 @@ bool BarnesHut::Threshold(Body body, PositionVector center_of_mass, Dimension di
 
 void BarnesHut::ComputeAcceleration(Body &body1, double mass, PositionVector r2) {
     spdlog::debug("Computing acceleration for : {}", body1.get_name());
+    
     double scalar = (this->G * mass);
-    spdlog::debug("Scalar resolved : {}", scalar);
+    scalar /= pow(pow(EuclideanDistance(r2, body1.get_position()), 2) +  pow(this->epsilon, 2), 1.5);
+    spdlog::info("Scalar resolved : {}", scalar);
+    
     PositionVector relat_dist = r2 - body1.get_position();
-    spdlog::debug("Relative distance : [{0}, {1}, {2}]", relat_dist.get_x(), relat_dist.get_y(), relat_dist.get_z());
-    scalar /= pow((pow(relat_dist.get_x(), 2) + pow(relat_dist.get_y(), 2) + pow(relat_dist.get_z(), 2) +
-                   pow(this->epsilon, 2)), 1.5);
     PositionVector acceleration = relat_dist * scalar;
-    spdlog::debug("Acceleration : [{0}, {1}, {2}]", acceleration.get_x(), acceleration.get_y(), acceleration.get_z());
-    body1.set_acceleration(acceleration);
+    body1.update_acceleration(acceleration);
+    spdlog::info("Acceleration : [{0}, {1}, {2}]", body1.get_accerleration().get_x(), body1.get_accerleration().get_y(), body1.get_accerleration().get_z());
 }
 
 void BarnesHut::UpdateVelocity(Body &body) {
-    body.set_velocity(body.get_accerleration() * this->delta / 2);
+    body.update_velocity(body.get_accerleration() * this->delta );
 }
 
 void BarnesHut::UpdatePosition(Body &body) {
-    body.set_position(body.get_velocity() * this->delta / 2);
+    body.update_position(body.get_velocity() * this->delta );
 }
 
-void BarnesHut::DisplayTree() {
-    DisplayBox(*(this->root));
-}
-
-void BarnesHut::DisplayBox(Box box) {
-    box.DisplayBox();
-    for (int i = 0; i < box.get_sub_boxes().size(); i++) {
-        this->DisplayBox(box.get_sub_boxes()[i]);
+void BarnesHut::Display() {
+    for(auto body: bodies){
+        spdlog::info("Body name: {}", body.get_name());
+        spdlog::info("Position: [{0} {1} {2}]", body.get_position().get_x(), body.get_position().get_y(), body.get_position().get_z());
+        spdlog::info("Velocity: [{0} {1} {2}]", body.get_velocity().get_x(), body.get_velocity().get_y(), body.get_velocity().get_z());
+        spdlog::info("Acceleration: [{0} {1} {2}]", body.get_accerleration().get_x(), body.get_accerleration().get_y(), body.get_accerleration().get_z());
     }
+
+    spdlog::info("KE of the system: {}", this->KE);
+    spdlog::info("PE of the system: {}", this->PE);
+    double viral = (this->KE*2)/abs(this->PE);
+    spdlog::info("Viral Eq of the system: {}", viral);
 }
 
 void BarnesHut::CreateVtkFile() {
-    vtkSmartPointer<vtkPoints> points = vtkSmartPointer<vtkPoints>::New();
-    AddPoint(points, root);
-    vtkSmartPointer<vtkPolyData> polydata = vtkSmartPointer<vtkPolyData>::New();
-    // Set the points to the polydata object
+    vtkNew<vtkPoints> points;
+
+    for(auto body: bodies){
+        points->InsertNextPoint(
+            body.get_position().get_x(), body.get_position().get_y(), body.get_position().get_z()
+        );
+    }    
+
+    vtkNew<vtkPolyData> polydata;
     polydata->SetPoints(points);
-
-    vtkSmartPointer<vtkSphereSource> sphereSource = vtkSmartPointer<vtkSphereSource>::New();
-    sphereSource->SetRadius(1.0); // Adjust the radius as needed
-    sphereSource->SetThetaResolution(16); // Adjust the resolution as needed
-    sphereSource->SetPhiResolution(16);
-
-    vtkSmartPointer<vtkGlyph3D> glyphFilter = vtkSmartPointer<vtkGlyph3D>::New();
-    glyphFilter->SetSourceConnection(sphereSource->GetOutputPort());
-    glyphFilter->SetInputData(polydata);
-    glyphFilter->SetScaleModeToDataScalingOff(); // Use the same size for all spheres
-    glyphFilter->Update();
-
-    // Write the output to a .vtp file
-    vtkSmartPointer<vtkXMLPolyDataWriter> writer = vtkSmartPointer<vtkXMLPolyDataWriter>::New();
-    writer->SetFileName("../data/spheres.vtp");
-    writer->SetInputData(glyphFilter->GetOutput());
+    vtkNew<vtkXMLPolyDataWriter> writer;
+    writer->SetFileName("./data/test_.vtp");
+    writer->SetInputData(polydata);
+    writer->SetDataModeToAscii();
     writer->Write();
-
-//    // Write the polydata to a .vtk file
-//    vtkSmartPointer<vtkPolyDataWriter> writer = vtkSmartPointer<vtkPolyDataWriter>::New();
-//    writer->SetFileName("../data/points.vtp");
-//    writer->SetInputData(polydata);
-//    writer->Write();
 }
 
-void BarnesHut::AddPoint(const vtkSmartPointer<vtkPoints> &points, Box *box) {
-    if (box->get_body() != nullptr) {
-        points->InsertNextPoint(box->get_body()->get_position().get_x()/100,
-                                box->get_body()->get_position().get_y()/100, box->get_body()->get_position().get_z()/100);
+void BarnesHut::UpdateKE(){
+    this->KE = 0;
+    for(auto body: bodies){
+        this->KE += 0.5*(body.get_mass()*pow(EuclideanDistance(body.get_velocity(), PositionVector()), 2));
     }
-    for (auto subBox: box->get_sub_boxes()) {
-        AddPoint(points, &subBox);
+}
+
+void BarnesHut::UpdatePE(){
+    this->PE = 0;
+
+    for(int i = 0; i < bodies.size(); i++){
+        for(int j = i+1; j < bodies.size(); j++){
+            this->PE -= this->G*(bodies[i].get_mass()*bodies[j].get_mass());
+            this->PE /= EuclideanDistance(bodies[i].get_position(), bodies[j].get_position());
+        }
     }
+}
+
+
+double BarnesHut::EuclideanDistance(PositionVector r1, PositionVector r2){
+    PositionVector rel = r1 - r2;
+    return sqrt(pow(rel.get_x(), 2) + pow(rel.get_y(), 2) + pow(rel.get_z(), 2));
 }
